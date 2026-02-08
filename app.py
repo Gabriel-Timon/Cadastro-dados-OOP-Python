@@ -11,6 +11,7 @@ def main():
         seed()
         
     menu_principal()
+    # print(pessoa for pessoa in )
    
 
 if __name__ == "__main__":

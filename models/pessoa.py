@@ -190,11 +190,16 @@ class Pessoa:
             print(f"{meses[mes_num-1].ljust(10)}: {qtd} {plural_pessoa(qtd)}")
 
     @classmethod
-    def pesquisar_cadastro(cls, cpf):
-        lista_pesquisa = [p for p in cls.lista_pessoas if p._cpf == cpf]
-        print("Cadastro atual:\n")
-        for p in lista_pesquisa:
-            print(p)
+    def pesquisar_cadastro(cls, cpf:int):
+        cpf_istrue = [p for p in cls.lista_pessoas if p._cpf == cpf]
+        if cpf_istrue:
+            print_cores("Cadastro atual:", "azul")
+            for p in cpf_istrue:
+                print(p)
+                return True
+        else:
+            print_cores(f"\n❌ CPF não encontrado", "vermelho")
+            return False
 
     @classmethod    
     def editar_nome(cls, cpf:int):
@@ -230,7 +235,7 @@ class Pessoa:
         print_cores(f"\n✅ Data de nascimento alterada com sucesso", "verde")
     
     @classmethod
-    def editar_sexo(cls,cpf):
+    def editar_sexo(cls,cpf:int):
         for pessoa in cls.lista_pessoas:
             if pessoa._cpf == cpf:
                 while True:
@@ -238,7 +243,29 @@ class Pessoa:
                     if novo_sexo not in ["M", "F"]:
                         print_cores('Resposta inválida! Digite "M" para Masculino ou "F" para Feminino', 'vermelho')
                     else:
+                        pessoa._sexo = novo_sexo
                         break
-                    pessoa._sexo = novo_sexo
-        
+
         print_cores(f"\n✅ Sexo alterado com sucesso", "verde")
+
+    @classmethod
+    def editar_cpf(cls, cpf:int):
+        for pessoa in cls.lista_pessoas:
+            if pessoa._cpf == cpf:
+                while True:
+                    novo_cpf = input("\nNovo CPF: ").strip()
+                    if novo_cpf.isdigit() and len(novo_cpf) == 11:
+                        pessoa._cpf = int(novo_cpf)
+                        break
+                    else:
+                        print_cores(f"O CPF {novo_cpf} é inválido.", "vermelho")
+        print_cores("\n✅ CPF alterado com sucesso", "verde")
+
+    @classmethod
+    def excluir_cadastro(cls, cpf:int):
+        for pessoa in cls.lista_pessoas:
+            if pessoa._cpf == cpf:
+                cls.lista_pessoas.remove(pessoa)
+        
+        print_cores("\n✅ Cadastro removido com sucesso", "verde")
+            

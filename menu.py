@@ -190,18 +190,57 @@ def menu_edicao_cadastro():
                 titulo("PESQUISAR POR CPF")
                 cpf = input("CPF: ").strip()
                 if cpf.isdigit() and len(cpf) == 11:
-                    Pessoa.pesquisar_cadastro(int(cpf))
-                    mensagem_continuar()
-                    limpar()
-                    menu_edicao(int(cpf))
-                    mensagem_continuar()
-                    menu_principal()
+                    achou = Pessoa.pesquisar_cadastro(int(cpf))
+
+                    if achou:
+                        mensagem_continuar()
+                        limpar()
+                        menu_edicao(int(cpf))
+                    
+                    else:
+                       mensagem_continuar()
+                       menu_edicao_cadastro()
                 else:
-                    print_cores("❌ Inválido! Digite os 11 dígitos do CPF", "vermelho")
-            case 3: pass
-            case 0: pass
+                    print_cores("\n❌ Inválido! Digite os 11 dígitos do CPF", "vermelho")
+                    mensagem_continuar()
+                    menu_edicao_cadastro()
+                    
+            case 3: 
+                limpar()
+                titulo("PESQUISAR POR CPF")
+                cpf = input("CPF: ").strip()
+                if cpf.isdigit() and len(cpf) == 11:
+                    achou = Pessoa.pesquisar_cadastro(int(cpf))
+
+                    if achou:
+                        while True:
+                            confirmar = input("\nConfirmar exclusão do cadastro [S/N]? ").strip().upper()[0]
+                            if confirmar in ["S", "N"]:
+                                if confirmar == "S":
+                                    Pessoa.excluir_cadastro(int(cpf))
+                                    mensagem_continuar()
+                                    break
+                                    
+                                elif confirmar == "N":
+                                    print_cores("\n❌ Remoção de cadastro cancelada", "vermelho")
+                                    mensagem_continuar()
+                                    break
+                            else:
+                                print_cores('\n❌ Digite apenas "S" ou "N" para sim ou não', 'vermelho')
+                        
+                        menu_principal()
+
+                    else:
+                       mensagem_continuar()
+                       menu_edicao_cadastro()
+                else:
+                    print_cores("\n❌ Inválido! Digite os 11 dígitos do CPF", "vermelho")
+                    mensagem_continuar()
+                    menu_edicao_cadastro()
+
+            case 0: menu_principal()
     else:
-        print_cores("❌ Digite apenas opções entre 0 e 3", "vermelho")
+        print_cores("\n❌ Digite apenas opções entre 0 e 3", "vermelho")
 
 def menu_edicao(cpf):
     print("O que deseja editar?\n")
@@ -219,6 +258,6 @@ def menu_edicao(cpf):
             case 1: Pessoa.editar_nome(cpf)
             case 2: Pessoa.editar_sobrenome(cpf)
             case 3: Pessoa.editar_dataNascimento(cpf)
-            case 4: pass
-            case 5: pass
-            case 0: pass
+            case 4: Pessoa.editar_sexo(cpf)
+            case 5: Pessoa.editar_cpf(cpf)
+            case 0: menu_edicao_cadastro()
