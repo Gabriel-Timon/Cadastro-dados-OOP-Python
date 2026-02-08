@@ -1,5 +1,8 @@
 from datetime import datetime
 from utils import print_cores
+import csv
+import json
+from pathlib import Path
 
 class Pessoa:
     lista_pessoas = []
@@ -269,3 +272,77 @@ class Pessoa:
         
         print_cores("\n✅ Cadastro removido com sucesso", "verde")
             
+    @classmethod
+    def to_dict_list(cls):
+        return [
+            {
+                "nome": p._nome,
+                "sobrenome": p._sobrenome,
+                "data_nascimento": p._nascimento,
+                "sexo": p.formatar_sexo,
+                "cpf": str(p._cpf).zfill(11),
+                "idade": p.idade,
+            }
+            for p in cls.lista_pessoas
+        ]
+    
+    @classmethod
+    def pasta_documentos(cls):
+        return Path.home() / "Documents"
+
+
+    @classmethod
+    def exportar_csv(cls, nome_arquivo="pessoas.csv"):
+        dados = cls.to_dict_list()
+        if not dados:
+            print_cores("❌ Não há cadastros para exportar.", "vermelho")
+            return
+
+        caminho = cls.pasta_documentos() / nome_arquivo
+
+        with caminho.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=dados[0].keys(), delimiter=";")
+            writer.writeheader()
+            writer.writerows(dados)
+
+        print_cores(f"✅ Exportado para CSV em: {caminho}", "verde")
+
+
+    @classmethod
+    def exportar_json(cls, nome_arquivo="pessoas.json"):
+        dados = cls.to_dict_list()
+        if not dados:
+            print_cores("❌ Não há cadastros para exportar.", "vermelho")
+            return
+
+        caminho = cls.pasta_documentos() / nome_arquivo
+
+        with caminho.open("w", encoding="utf-8") as f:
+            json.dump(dados, f, ensure_ascii=False, indent=2)
+
+        print_cores(f"✅ Exportado para JSON em: {caminho}", "verde")
+
+
+    @classmethod
+    def exportar_xlsx(cls, nome_arquivo="pessoas.xlsx"):
+        from openpyxl import Workbook
+
+        dados = cls.to_dict_list()
+        if not dados:
+            print_cores("❌ Não há cadastros para exportar.", "vermelho")
+            return
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Pessoas"
+
+        headers = list(dados[0].keys())
+        ws.append(headers)
+
+        for row in dados:
+            ws.append([row[h] for h in headers])
+
+        caminho = cls.pasta_documentos() / nome_arquivo
+        wb.save(caminho)
+
+        print_cores(f"✅ Exportado para XLSX em: {caminho}", "verde")

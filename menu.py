@@ -1,9 +1,10 @@
-from utils import limpar, print_cores, input_cores, titulo, mensagem_continuar
+from utils import *
 from cadastro import cadastro
 from models.pessoa import Pessoa
 
 def menu_principal():
     limpar()
+    titulo_menuPrincipal()
     print("1. Menu de filtros")
     print("2. Editar cadastro")
     print("3. Exibir estatísticas")
@@ -17,13 +18,14 @@ def menu_principal():
             case 1: menu_filtros()
             case 2: menu_edicao_cadastro()
             case 3: menu_estatisticas()
-            case 4: pass
+            case 4: menu_exportacao()
             case 0: pass
     else:
         print_cores("\n❌ Digite apenas opções entre 0 e 4", "vermelho")
 
 def menu_filtros():
     limpar()
+    titulo_menuFiltros()
     print("1. Exibir todos os Homens")
     print("2. Exibir todas as mulheres")
     print("3. Exibir pessoa mais velha")
@@ -40,35 +42,35 @@ def menu_filtros():
         match int(opcao):
             case 1:
                 limpar()
-                titulo("EXIBIR TODOS OS HOMENS")
+                subtitulo_exibirHomens()
                 Pessoa.homens()
                 mensagem_continuar()
                 menu_filtros()
 
             case 2: 
                 limpar()
-                titulo("EXIBIR TODAS AS MULHERES")
+                subtitulo_exibirMulheres()
                 Pessoa.mulheres()
                 mensagem_continuar()
                 menu_filtros()
             
             case 3: 
                 limpar()
-                titulo("EXIBIR PESSOA MAIS VELHA")
+                subtitulo_pessoaMaisVelha()
                 Pessoa.mais_velho()
                 mensagem_continuar()
                 menu_filtros()
 
             case 4: 
                 limpar()
-                titulo("EXIBIR PESSOA MAIS NOVA")
+                subtitulo_pessoaMaisNova()
                 Pessoa.mais_novo()
                 mensagem_continuar()
                 menu_filtros()
 
             case 5: 
                 limpar()
-                titulo("EXIBIR MENORES DE IDADE")
+                subtitulo_menoresIdade()
                 Pessoa.menor_idade()
                 mensagem_continuar()
                 menu_filtros()
@@ -102,6 +104,7 @@ def menu_filtros():
 
 def menu_estatisticas():
     limpar()
+    titulo_menuEstatisticas()
     print("1. Total de cadastros")
     print("2. Quantidade de homens e mulheres")
     print("3. Média de idade")
@@ -172,6 +175,7 @@ def menu_estatisticas():
 
 def menu_edicao_cadastro():
     limpar()
+    titulo_edicaoCadastro()
     print("1. Adicionar mais pessoas")
     print("2. Editar uma pessoa")
     print("3. Excluir uma pessoa")
@@ -243,6 +247,7 @@ def menu_edicao_cadastro():
         print_cores("\n❌ Digite apenas opções entre 0 e 3", "vermelho")
 
 def menu_edicao(cpf):
+    titulo_opcoesEdicao()
     print("O que deseja editar?\n")
     print("1. Nome")
     print("2. Sobrenome")
@@ -261,3 +266,71 @@ def menu_edicao(cpf):
             case 4: Pessoa.editar_sexo(cpf)
             case 5: Pessoa.editar_cpf(cpf)
             case 0: menu_edicao_cadastro()
+
+def menu_exportacao():
+    limpar()
+    titulo_menuExportacao()
+    print("1. Exportar para CSV")
+    print("2. Exportar para XLSX")
+    print("3. Exportar para JSON")
+    print("0. Voltar para menu principal")
+
+    opcao = input("\nEscolha: ").strip()
+
+    if opcao.isdigit() and (0 <= int(opcao) <= 3):
+        match int(opcao):
+            case 1:
+                while True:
+                    confirmar = input("Confirmar exportação [S/N]: ").strip().upper()[0]
+                    if confirmar in ["S", "N"]:
+                        match confirmar:
+                            case "S": 
+                                Pessoa.exportar_csv()
+                                mensagem_continuar()
+                                break
+                            case "N":
+                                print_cores("\n❌ Exportação cancelada", "vermelho")
+                                mensagem_continuar()
+                                break
+                    else:
+                        print_cores('\n❌ Digite apenas "S" ou "N" para sim ou não', 'vermelho')
+                    
+                menu_principal()
+
+            case 2:
+                while True:
+                    confirmar = input("Confirmar exportação [S/N]: ").strip().upper()[0]
+                    if confirmar in ["S", "N"]:
+                        match confirmar:
+                            case "S": 
+                                Pessoa.exportar_xlsx()
+                                mensagem_continuar()
+                                break
+                            case "N":
+                                print_cores("\n❌ Exportação cancelada", "vermelho")
+                                mensagem_continuar()
+                                break
+                    else:
+                        print_cores('\n❌ Digite apenas "S" ou "N" para sim ou não', 'vermelho')
+                    
+                menu_principal()
+            case 3:
+                while True:
+                    confirmar = input("Confirmar exportação [S/N]: ").strip().upper()[0]
+                    if confirmar in ["S", "N"]:
+                        match confirmar:
+                            case "S": 
+                                Pessoa.exportar_json()
+                                mensagem_continuar()
+                                break
+                            case "N":
+                                print_cores("\n❌ Exportação cancelada", "vermelho")
+                                mensagem_continuar()
+                                break
+                    else:
+                        print_cores('\n❌ Digite apenas "S" ou "N" para sim ou não', 'vermelho')
+                    
+                menu_principal()
+            case 0: menu_principal()
+    else:
+        print_cores("\n❌ Escolha uma opção entre 0 e 3", "vermelho")
