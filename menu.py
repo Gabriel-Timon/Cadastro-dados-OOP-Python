@@ -1,4 +1,5 @@
 from utils import *
+from titulos import *
 from cadastro import cadastro
 from models.pessoa import Pessoa
 
@@ -77,21 +78,21 @@ def menu_filtros():
 
             case 6: 
                 limpar()
-                titulo("EXIBIR PESSOAS COM IDADE ACIMA DA MÉDIA DE IDADE")
+                subtitulo_idadeAcimaMedia()
                 Pessoa.pessoa_acima_media()
                 mensagem_continuar()
                 menu_filtros()
 
             case 7: 
                 limpar()
-                titulo("EXIBIR TODOS OS CADASTROS")
+                subtitulo_todosCadastros()
                 Pessoa.listar_cadastros()
                 mensagem_continuar()
                 menu_filtros()
             
             case 8:
                 limpar()
-                titulo("EXIBIR ANIVERSARIANTES NO MESMO MÊS")
+                subtitulo_aniversariantesMes()
                 mes = input("Qual mês deseja pesquisar? ").strip()
                 print()
                 Pessoa.aniversariantes_por_mes(mes)
@@ -120,14 +121,14 @@ def menu_estatisticas():
         match int(opcao):
             case 1:
                 limpar()
-                titulo("TOTAL DE CADASTROS")
+                subtitulo_totalCadastros()
                 Pessoa.total_cadastros()
                 mensagem_continuar()
                 menu_estatisticas()
                 
             case 2: 
                 limpar()
-                titulo("QUANTIDADE DE HOMENS E MULHERES")
+                subtitulo_totalHomensMulheres()
                 Pessoa.quantidade_mulheres()
                 Pessoa.quantidade_homens()
                 mensagem_continuar()
@@ -135,14 +136,14 @@ def menu_estatisticas():
 
             case 3:
                 limpar()
-                titulo("MÉDIA DE IDADE\n")
+                subtitulo_mediaIdade()
                 print(f"\nA média de idade é {Pessoa.media_idade()} anos.")
                 mensagem_continuar()
                 menu_estatisticas()
             
             case 4:
                 limpar()
-                titulo("QUANTIDADE DE MAIORES E MENORES DE IDADE")
+                subtitulo_maioresMenoresIdade()
                 Pessoa.quantidade_menores()
                 Pessoa.quantidade_maiores()
                 mensagem_continuar()
@@ -150,21 +151,21 @@ def menu_estatisticas():
 
             case 5:
                 limpar()
-                titulo("QUANTIDADE DE PESSOAS POR FAIXA ETÁRIA")
+                subtitulo_pessoasFaixaEtaria()
                 Pessoa.quantidade_faixa_etaria()
                 mensagem_continuar()
                 menu_estatisticas()
             
             case 6: 
                 limpar()
-                titulo("PESSOA COM A MENOR IDADE E COM A MAIOR IDADE")
+                subtitulo_maisVelhomaisNovo()
                 Pessoa.maior_menor_idade()
                 mensagem_continuar()
                 menu_estatisticas()
 
             case 7: 
                 limpar()
-                titulo("ANIVERSARIANTES POR MES")
+                subtitulo_aniversariantesMes()
                 Pessoa. quant_aniversariantes_todosMeses()
                 mensagem_continuar()
                 menu_estatisticas()
@@ -191,7 +192,7 @@ def menu_edicao_cadastro():
                 menu_principal()
             case 2: 
                 limpar()
-                titulo("PESQUISAR POR CPF")
+                subtitulo_pesquisarporCPF()
                 cpf = input("CPF: ").strip()
                 if cpf.isdigit() and len(cpf) == 11:
                     achou = Pessoa.pesquisar_cadastro(int(cpf))
@@ -211,7 +212,7 @@ def menu_edicao_cadastro():
                     
             case 3: 
                 limpar()
-                titulo("PESQUISAR POR CPF")
+                subtitulo_pesquisarporCPF()
                 cpf = input("CPF: ").strip()
                 if cpf.isdigit() and len(cpf) == 11:
                     achou = Pessoa.pesquisar_cadastro(int(cpf))
