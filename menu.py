@@ -166,7 +166,7 @@ def menu_estatisticas():
             case 7: 
                 limpar()
                 subtitulo_aniversariantesMes()
-                Pessoa. quant_aniversariantes_todosMeses()
+                Pessoa.quant_aniversariantes_todosMeses()
                 mensagem_continuar()
                 menu_estatisticas()
 
@@ -201,6 +201,8 @@ def menu_edicao_cadastro():
                         mensagem_continuar()
                         limpar()
                         menu_edicao(int(cpf))
+                        mensagem_continuar()
+                        menu_principal()
                     
                     else:
                        mensagem_continuar()
